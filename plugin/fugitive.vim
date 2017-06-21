@@ -1043,10 +1043,16 @@ function! s:StagePatch(lnum1,lnum2) abort
   endfor
   try
     if !empty(add)
+      let git = g:fugitive_git_executable
+      let g:fugitive_git_executable = 'set GIT_EDITOR=gvim && ' . g:fugitive_git_executable
       execute "Git add --patch -- ".join(map(add,'s:shellesc(v:val)'))
+      let g:fugitive_git_executable = git
     endif
     if !empty(reset)
+      let git = g:fugitive_git_executable
+      let g:fugitive_git_executable = 'set GIT_EDITOR=gvim && ' . g:fugitive_git_executable
       execute "Git reset --patch -- ".join(map(reset,'s:shellesc(v:val)'))
+      let g:fugitive_git_executable = git
     endif
     if exists('first_filename')
       silent! edit!
